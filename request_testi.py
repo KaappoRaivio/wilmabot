@@ -7,8 +7,7 @@ import webbrowser
 def getSessionId(html):
     for i in html.split('\n'):
         if i.startswith('            <input type="hidden" name="SESSIONID" value='):
-            a = i.split(' ')
-            return a[len(a) - 1][7:19]
+            return i.split(' ')[len(i.split(' ')) - 1][7:19]
     return 0
 
 
@@ -33,30 +32,13 @@ def avaaSelaimessa(filu, filename2):
 
 
 with requests.Session() as s:
-    response = s.get('https://wilma.espoo.fi/login')
-
-    SESSIONID = getSessionId(response.text)
-
     payload = eval(open('credentials.txt', 'r').read())
 
-    print(payload)
+    response = s.get('https://wilma.espoo.fi/login')
 
-    p = s.post('https://wilma.espoo.fi/login', data=payload)
+    session_id = getSessionId(response.text)
 
-    SESSIONID = getSessionId(p.text)
-    SESSIONKEY = getSessionKey(p.text)
+    avaaSelaimessa(s.post('https://wilma.espoo.fi/login', data={'SESSIONID': session_id, **payload}).text, 'temp')
+    avaaSelaimessa(s.get('https://wilma.espoo.fi/groups/1101955').text, 'temp1')
 
-    payload = {
-        'Login': 'kaappo.raivio',
-        'Password': 'A2606gnu',
-        'SESSIONID': SESSIONID,
-        'formkey': SESSIONKEY
-    }
-
-    r = s.post('https://wilma.espoo.fi/groups/1101786', data=payload)
-
-    # print(p.headers)
-    avaaSelaimessa(p.text, 'login.html')
-    print(p.text)
-    print(getSessionKey(p.text))
-    avaaSelaimessa(r.text, 'fetch.html')
+    print(s.cookies)
