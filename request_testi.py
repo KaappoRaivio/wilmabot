@@ -8,7 +8,8 @@ def getSessionId(html):
     for i in html.split('\n'):
         if i.startswith('            <input type="hidden" name="SESSIONID" value='):
             return i.split(' ')[len(i.split(' ')) - 1][7:19]
-    return 0
+    else:
+        return 0
 
 
 def getSessionKey(html):
@@ -16,7 +17,8 @@ def getSessionKey(html):
         if i.startswith('                <input type="hidden" name="formkey" value="'):
             a = i.split(' ')
             return a[len(a) - 1][7:len(a[len(a) - 1]) - 3]
-    return 0
+    else:
+        return 0
 
 
 def avaaSelaimessa(filu, filename2):
