@@ -18,11 +18,11 @@ class Oppitunti(object):
 
     def printAttrs(self):
         temp = {}
-        for i in dir(self):
+        for i in self.__dict__:
             if not i.startswith('__'):
                 temp[i] = (str(self.__getattribute__(i)))
 
-        print(temp)
+        # print(temp)
         for key, value in temp.items():
             print('{}: {}'.format(key, value))
 
@@ -72,6 +72,14 @@ class MyHTMLParser(HTMLParser):
 
 
     def handle_data(self, data):
+        lista = data.split(': ')
+
+        if lista[0].lower() in ['maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai', 'lauantai', 'sunnuntai']:
+            print(lista)
+            print(lista[1][11:16])
+            testi.alkamisaika = lista[1][11:16]
+            testi.päättymisaika = lista[1][29:34]
+
         print("\tData: {}".format(data))
 
 
