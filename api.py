@@ -1,7 +1,7 @@
 import requests
 import webbrowser
 import os
-
+import json
 
 
 def avaaSelaimessa(filu):
@@ -19,6 +19,7 @@ def avaaSelaimessa(filu):
 
 class Wilma:
     id = 0
+
     def __init__(self, credentials='credentials.txt'):
         self.__password = eval(open('credentials.txt', 'r').read())['Password']
         self.__username = eval(open('credentials.txt', 'r').read())['Login']
@@ -66,6 +67,10 @@ print(botti.handleLogin())
 
 # avaaSelaimessa(botti.getPage('https://wilma.espoo.fi/schedule').text)
 
-print(botti.getPage('https://wilma.espoo.fi/schedule').text)
+response = botti.getPage('https://wilma.espoo.fi/schedule')
+
+data = response.json()
+print(data)
+
 
 del botti
