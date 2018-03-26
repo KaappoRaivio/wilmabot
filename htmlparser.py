@@ -1,5 +1,6 @@
 from html.parser import HTMLParser
 from html.entities import name2codepoint
+import sys
 
 
 class Oppitunti(object):
@@ -8,9 +9,11 @@ class Oppitunti(object):
 
     def __init__(self):
         self.__id = Oppitunti.id
+        self.data = []
         Oppitunti.id += 1
 
     def organizeData(self):
+        print(self.data)
         self.nimi_lyhyt = self.data[0].split(' ')[0]
         self.nimi_pitkä = self.data[0].split(' ')[1]
         self.opettaja = self.data[1]
@@ -26,20 +29,28 @@ class Oppitunti(object):
         for key, value in temp.items():
             print('{}: {}'.format(key, value))
 
+    def getData(self, tag, attrs):
+
+        print("asd" + attrs['title'])
+
+
+        self.data.append(attrs['title'])
+
+        print(str(testi.data) + '\n\n\n\n\n\n\n\n\n\n')
+
+
+    def getWeekday(self, tag, attrs):
+        print(attrs['data-weekday'])
+        self.viikonpäivä = attrs['data-weekday']
+
+    def viikonpäivä(self, data):
+        lista = data.split(' ')
+        self.alkamisaika = lista[1][11:16]
+        self.päättymisaika = lista[1][29:34]
+
+
 testi = Oppitunti()
 
-
-def getWeekday(tag, attrs):
-    print(attrs['data-weekday'])
-    testi.viikonpäivä = attrs['data-weekday']
-
-
-def getData(tag, attrs):
-    print("asd" + attrs['title'])
-    try:
-        testi.data.append(attrs['title'])
-    except AttributeError:
-        testi.data = [attrs['title']]
 
 
 class MyHTMLParser(HTMLParser):
@@ -54,32 +65,28 @@ class MyHTMLParser(HTMLParser):
 
         # viikonpäivä
         if tag == 'div' and 'data-weekday' in attrs:
-            getWeekday(tag, attrs)
+            testi.getWeekday(tag, attrs)
 
         #  tunnin nimi
 
-        if tag == 'a' and 'title' in attrs and 'class' in attrs and not 'normal teachers profile-link no-underline-link' in attrs:
+        if tag == 'a' and 'title' in attrs and 'class' in attrs and 'normal teachers profile-link no-underline-link' not in attrs:
             print('asd\n\n')
-            getData(tag, attrs)
+            testi.getData(tag, attrs)
 
-        print("Start tag:", tag)
-        for key in attrs:
-            print("\tattr: {}: {}".format(key, attrs[key]))
+        # print("Start tag:", tag)
+        # for key in attrs:
+        #     print("\tattr: {}: {}".format(key, attrs[key]))
 
 
     def handle_endtag(self, tag):
-        print("<{}>".format(tag))
-
+        # print("<{}>".format(tag))
+        pass
 
     def handle_data(self, data):
         lista = data.split(': ')
 
         if lista[0].lower() in ['maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai', 'lauantai', 'sunnuntai']:
-            print(lista)
-            print(lista[1][11:16])
-            testi.alkamisaika = lista[1][11:16]
-            testi.päättymisaika = lista[1][29:34]
-
+            testi.viikonpäivä(data)
         print("\tData: {}".format(data))
 
 
@@ -118,10 +125,14 @@ class MyHTMLParser(HTMLParser):
     #     print("Decl     :", data)
 
 
-parsaaja = MyHTMLParser()
+def call(string=open(sys.argv[1]).read()):
+    print(string)
+    testi = Oppitunti()
+    parsaaja = MyHTMLParser()
+    parsaaja.feed(string)
 
-parsaaja.feed(open('kakka.txt', 'r').read())
+    testi.organizeData()
+    return testi
 
-
-testi.organizeData()
-testi.printAttrs()
+if __name__ == '__main__':
+    call()

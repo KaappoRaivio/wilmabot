@@ -28,7 +28,7 @@ class Wilma:
         Wilma.id += 1
 
     def __del__(self):
-        print('Poistetaan {}'.format(self.__id))
+        # print('Poistetaan {}'.format(self.__id))
         self.session.close()
 
     @property
@@ -63,14 +63,13 @@ class Wilma:
 
 
 botti = Wilma()
-print(botti.handleLogin())
+botti.handleLogin()
 
 # avaaSelaimessa(botti.getPage('https://wilma.espoo.fi/schedule').text)
 
 response = botti.getPage('https://wilma.espoo.fi/schedule')
 
-data = response.json()
-print(data)
+print(response.text)
 
 
 del botti
