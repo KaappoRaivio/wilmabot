@@ -1,4 +1,4 @@
-text = open('kakka2.txt', 'r').read()
+text = open('kakka.txt', 'r').read()
 
 lista = text.split('\n')
 
