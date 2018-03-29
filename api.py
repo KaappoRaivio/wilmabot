@@ -63,13 +63,13 @@ class Wilma:
 
 
 botti = Wilma()
-botti.handleLogin()
+print(botti.handleLogin())
 
 # avaaSelaimessa(botti.getPage('https://wilma.espoo.fi/schedule').text)
 
 response = botti.getPage('https://wilma.espoo.fi/schedule')
 
-print(response.text)
+# print(response.text)
 
 
 del botti

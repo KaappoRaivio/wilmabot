@@ -17,6 +17,6 @@ for i in range(len(lista)):
 else:
     print('eitoimi')
 
-text = '\n'.join(lista)
+schedule_part = '\n'.join(lista)
 
-print(text)
+schedule_part
