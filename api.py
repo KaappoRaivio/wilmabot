@@ -2,7 +2,7 @@ import requests
 import webbrowser
 import os
 import json
-
+import extractschedule
 
 def avaaSelaimessa(filu):
     f = open('temp.html', 'w')
@@ -62,14 +62,18 @@ class Wilma:
         return self.session.get(url, data=self.payload)
 
 
+
 botti = Wilma()
-print(botti.handleLogin())
+botti.handleLogin()
 
 # avaaSelaimessa(botti.getPage('https://wilma.espoo.fi/schedule').text)
 
 response = botti.getPage('https://wilma.espoo.fi/schedule')
 
-# print(response.text)
+print(response.text)
+# print(avaaSelaimessa(response.text))
+
+# print(extractschedule.extract(response.text))
 
 
 del botti
