@@ -30,7 +30,7 @@ import re
 # print('\n'.join(lista))
 
 def find(string):
-    pattern_alku = re.compile('<script type="text/javascript">')
+    pattern_alku = re.compile('        var eventsJSON = ')
     pattern_loppu = re.compile('var weekdays')
 
     lista = string.split('\n')

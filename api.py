@@ -30,6 +30,7 @@ class Wilma:
     def __del__(self):
         # print('Poistetaan {}'.format(self.__id))
         self.session.close()
+        del self
 
     @property
     def credentials(self):
@@ -45,13 +46,11 @@ class Wilma:
 
 
     def handleLogin(self):
-
         payload = self.credentials
 
         response = self.session.get('https://wilma.espoo.fi/login')
 
         self.session_id = Wilma.getSessionId(response.text)
-
         self.payload = {'SESSIONID': self.session_id, **payload}
 
         response = self.session.post('https://wilma.espoo.fi/login', self.payload)
@@ -70,7 +69,7 @@ botti.handleLogin()
 
 response = botti.getPage('https://wilma.espoo.fi/schedule')
 
-print(response.text)
+# print(response.text)
 # print(avaaSelaimessa(response.text))
 
 # print(extractschedule.extract(response.text))

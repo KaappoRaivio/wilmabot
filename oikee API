@@ -1,2 +1,0 @@
-def handleLogin():
-    response = s.get('https://wilma.espoo.fi/login')
