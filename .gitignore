@@ -1,3 +1,7 @@
 credentials.txt
 temp.html
 
+*.html
+*.pdf
+javascript/*.html
+javascript/*.pdf
